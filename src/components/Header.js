@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 
 const links = [
-  { href: '#', text: 'Giriş Yap', type: 'icon', className: 'menuItem' },
+  { href: '#', text: '', type: 'icon', className: 'menuItem' },
   { href: 'uyeol', text: 'Anasayfa', type: 'text', className: 'menuItem' },
   { href: 'uyeol', text: 'Kayıt Ol', type: 'text', className: 'menuItem' },
   { href: 'girisyap', text: 'Giriş Yap', type: 'text', className: 'menuItem' }
