@@ -1,7 +1,7 @@
 import { Button } from 'bootstrap';
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-const UyeOl = () => {
+const AnaSayfa = () => {
   return (
     <Container style={{ paddingTop: 40 }}>
       <Row>
@@ -115,4 +115,4 @@ const UyeOl = () => {
   );
 };
 
-export default UyeOl;
+export default AnaSayfa;
