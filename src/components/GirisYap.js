@@ -5,7 +5,24 @@ import {
    Form, FormGroup, Label, Input, Button,
   } 
   from 'reactstrap';
-const GirisYap = () => {
+
+  import firebase from 'firebase';
+  import firebaseConfig from '../constants/firebase';
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+ const GirisYap = () => {
+   const Auth=()=>{
+    firebase.auth().signInWithEmailAndPassword("irem@irem.irem", "12356")
+    .then(function(result) {
+      window.location.href = 'uyeol';
+      console.log(result);
+    }).catch(function(error) {
+
+      console.log(error);
+    });
+   };
   return (
   <Container  style={{alignItems:'center',marginLeft:400,paddingTop:60,position:'relative'}} >
      <h2>Biletos Giriş Formu</h2><br/>
@@ -29,7 +46,7 @@ const GirisYap = () => {
                   placeholder="********"
                 />
               </FormGroup>
-              <Button href="anasayfa" style={{alignItems:'center',marginLeft:20,position:'relative',width:300,backgroundColor:' #D61471',border:'none'}}>Giriş Yap</Button>
+              <Button onClick={()=>Auth()} style={{alignItems:'center',marginLeft:20,position:'relative',width:300,backgroundColor:' #D61471',border:'none'}}>Giriş Yap</Button>
               <br/><br/>
               <a href="uyeol" style={{alignItems:'center',marginLeft:100}}>Hemen Kayıt Olun</a>
               </Col>

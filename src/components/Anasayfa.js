@@ -87,7 +87,7 @@ const AnaSayfa = () => {
           </center>
           <hr />
           <div className="butonContainer">
-          <a style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> Bilet Al</a>
+          <a href='biletAl' style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> Bilet Al</a>
             </div>          
         </Col>
         <Col md='6'> 

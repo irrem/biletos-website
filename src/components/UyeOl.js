@@ -7,9 +7,8 @@ import {
   from 'reactstrap';
 const UyeOl = () => {
   return (
-    <Container>
-      <Container  style={{alignItems:'center',marginLeft:300,paddingTop:60,position:'relative'}} >
-      <h2>Biletos Kayıt Formu</h2><br/><br/>
+      <Container  style={{alignItems:'center',marginLeft:400,paddingTop:60,position:'relative'}} >
+      <h2>Biletos Kayıt Formu</h2><br/>
       <Form className="form"  style={{alignItems:'center',position:'relative'}}>
         <Col md="4">
               <FormGroup>
@@ -40,10 +39,11 @@ const UyeOl = () => {
                 />
               </FormGroup>
               <Button href="girisyap" style={{alignItems:'center',marginLeft:20,position:'relative',width:300,backgroundColor:' #D61471',border:'none'}}>Kayıt Ol</Button>
+              <br/><br/>
+              <a href="girisyap" style={{alignItems:'center',marginLeft:100}}>Zaten Bir Hesabım Var</a>
               </Col>
         </Form>    
    </Container>
-    </Container>
   );
 };
 

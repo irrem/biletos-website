@@ -14,7 +14,8 @@ const links = [
   { href: 'anasayfa', text: '', type: 'icon', className: 'menuItem' },
   { href: 'anasayfa', text: 'Anasayfa', type: 'text', className: 'menuItem' },
   { href: 'uyeol', text: 'Kayıt Ol', type: 'text', className: 'menuItem' },
-  { href: 'girisyap', text: 'Giriş Yap', type: 'text', className: 'menuItem' }
+  { href: 'girisyap', text: 'Giriş Yap', type: 'text', className: 'menuItem' },
+  { href: 'biletal', text: 'Bilet Al', type: 'text', className: 'menuItem' }
 ];
 
 const createNavItem = ({ href, text, className, type }) => (
