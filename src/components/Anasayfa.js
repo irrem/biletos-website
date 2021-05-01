@@ -4,6 +4,10 @@ import { Container, Row, Col } from 'reactstrap';
 import firebase from 'firebase';
 import firebaseConfig from '../constants/firebase';
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 const AnaSayfa = () => {
   const [items, setItems] = useState([]);
 
@@ -32,12 +36,14 @@ const AnaSayfa = () => {
 
   return (
     <Container style={{ paddingTop: 40 }}>
+      <Row>
+        <Col md='9'>
       {items.map(item => (
         <>
           <Row>
-            <Col md='3'>
+            <Col md='4'>
               <center>
-                <img src={item.image} />
+                <img style={{width:200, height:300}} src={item.image} />
                 <br />
                 <a style={{ color: 'black', lineHeight: 2, fontWeight: 'bold' }}>{item.title}</a>
               </center>
@@ -46,7 +52,7 @@ const AnaSayfa = () => {
                 <a style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> Bilet Al</a>
               </div>
             </Col>
-            <Col md='6'>
+            <Col md='8'>
               <a style={{ color: 'black', lineHeight: 2, fontWeight: 'bold' }}>{item.title}</a>
               <br />
               <p>{item.description}</p>
@@ -63,7 +69,22 @@ const AnaSayfa = () => {
           <hr />
         </>
       ))}
-      <hr />
+      </Col>
+      
+      <Col md='3'>
+      <Col>
+          <div className="butonContainer-left">
+          <a style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> Sinema </a>
+            </div>
+            <div className="butonContainer-left">
+          <a style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> Tiyatro </a>
+            </div> 
+            <div className="butonContainer-left">
+          <a style={{ color: 'white', lineHeight: 2, fontWeight: 'bold' }}> TalkShow</a>
+            </div> 
+         </Col>
+         </Col>
+      </Row>
     </Container>
   );
 };
