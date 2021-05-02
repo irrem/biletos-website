@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import { Container, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import jwt from 'jsonwebtoken';
 import firebase from 'firebase';
 import firebaseConfig from '../constants/firebase';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
+console.log(
+  'çözülmüş hali: ',
+  jwt.verify(
+    'eyJhbGciOiJIUzI1NiJ9.xLByZW0gc2VuaSDDp29rIHNldml5b3J1bQ.rmCWYrgHIPkf2dUrfpdm9BxWZIPMV2KWgVO6NUfuyNg',
+    'sametinkalbi'
+  )
+);
+
 const GirisYap = () => {
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
@@ -17,7 +26,12 @@ const GirisYap = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(function (result) {
-        window.location.href = 'uyeol';
+        console.log(result)
+        jwt.sign(JSON.stringify([{ email, password }]), 'biletos-password', function (err, token) {
+          localStorage.setItem('user-session', token);
+          // window.location.href = '/';
+          // işlem tamamlandı
+        });
       })
       .catch(function (error) {
         setValidation(error.message);
