@@ -29,7 +29,7 @@ const GirisYap = () => {
         console.log(result)
         jwt.sign(JSON.stringify([{ email, password }]), 'biletos-password', function (err, token) {
           localStorage.setItem('user-session', token);
-          // window.location.href = '/';
+          window.location.href = '/';
           // işlem tamamlandı
         });
       })

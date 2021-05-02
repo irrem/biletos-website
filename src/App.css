@@ -29,4 +29,13 @@
   height:70px;
   text-align: center;
 }
+#footer{
+  display: inline;
+  background-color: #252324;
+  margin: 50px;
+  padding: 30px;
+  width: 1080px;;
+  height:200px;
+  text-align: center;
+}
 
