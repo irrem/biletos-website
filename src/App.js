@@ -1,37 +1,44 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from './components/Header';
-import UyeOl from './components/UyeOl';
-import GirisYap from './components/GirisYap';
-import Anasayfa from './components/Anasayfa';
-import BiletAl from './components/BiletAl';
-import Profil from './components/Profil';
-import Admin from './components/Admin';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "./components/Header";
+import UyeOl from "./components/UyeOl";
+import GirisYap from "./components/GirisYap";
+import Anasayfa from "./components/Anasayfa";
+import BiletAl from "./components/BiletAl";
+import Profil from "./components/Profil";
+import Admin from "./components/Admin";
+import UserManagement from "./components/UserManagement";
 
 function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <Router>
         <div>
           <Header />
         </div>
         <Switch>
-          <Route path='/uyeol'>
+        <Route path="/usermanagement">
+            <UserManagement />
+          </Route>
+          <Route path="/uyeol">
             <UyeOl />
           </Route>
-          <Route path='/girisyap'>
+          <Route path="/girisyap">
             <GirisYap />
           </Route>
-          <Route path='/biletal/:topicId'>
+          <Route path="/biletal/:filmId">
             <BiletAl />
-          </Route>{' '}
-          <Route path='/admin'>
+          </Route>{" "}
+          <Route path="/admin">
             <Admin />
           </Route>
-          <Route path='/profil'>
+          <Route path="/profil">
             <Profil />
           </Route>
-          <Route path='/'>
+          <Route path="/admin">
+            <Admin />
+          </Route>
+          <Route path="/">
             <Anasayfa />
           </Route>
         </Switch>

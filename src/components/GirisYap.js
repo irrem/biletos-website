@@ -8,13 +8,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-console.log(
-  'çözülmüş hali: ',
-  jwt.verify(
-    'eyJhbGciOiJIUzI1NiJ9.xLByZW0gc2VuaSDDp29rIHNldml5b3J1bQ.rmCWYrgHIPkf2dUrfpdm9BxWZIPMV2KWgVO6NUfuyNg',
-    'sametinkalbi'
-  )
-);
+
 
 const GirisYap = () => {
   const [password, setPassword] = useState(null);
