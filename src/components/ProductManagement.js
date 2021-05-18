@@ -1,13 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
-import {
-  Container,
-  Col,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Row
-} from "reactstrap";
+import { Container, Col, Form, FormGroup, Label, Input, Row } from "reactstrap";
+import { Link } from "react-router-dom";
 import firebase from "firebase";
 import firebaseConfig from "../constants/firebase";
 
@@ -17,12 +10,13 @@ if (!firebase.apps.length) {
 var db = firebase.firestore();
 
 const UserManagement = () => {
-  const hourList = { hour: "10:30", hour: "17:30" };
   const [description, setDescription] = useState(null);
   const [category, setCategory] = useState(null);
   const [title, setTitle] = useState(null);
-  const [time, setTime] = useState(null);
+  const [time, setTime] = useState([]);
   const [image, setImage] = useState(null);
+  const [items, setItems] = useState([]);
+  const [id, setId] = useState(null);
 
   function clearInputValue() {
     setDescription("");
@@ -32,27 +26,105 @@ const UserManagement = () => {
     setTime("");
   }
 
-  function InsertMethod() {
-    firebase
-      .database()
-      .ref("theatres")
-      .push({
-        category,
-        description,
-        image,
-        time: hourList,
-        title,
-      })
-      .then(() => {
-        console.log("Inserted.");
+  // function InsertMethod() {
+  //   firebase
+  //     .database()
+  //     .ref("theatres")
+  //     .push({
+  //       category,
+  //       description,
+  //       image,
+  //       time,
+  //       title,
+  //     })
+  //     .then(() => {
+  //       console.log("Inserted.");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   clearInputValue();
+  // }
+
+  function GetDataWithId(id) {
+    db.collection("films")
+      .doc(id)
+      .get()
+      .then((querySnapshot) => {
+        // console.log(querySnapshot.id, " => ", querySnapshot.data());
+        setTitle(querySnapshot.data().title);
+        setDescription(querySnapshot.data().description);
+        setImage(querySnapshot.data().image);
+        setCategory(querySnapshot.data().category);
+        setTime(querySnapshot.data().times);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error getting documents: ", error);
       });
-      clearInputValue();
+    setId(id);
   }
 
-  useEffect(() => {});
+  const InsertItemData = () => {
+    db.collection("films")
+      .add({ category, title, image, description, time })
+      .then((docRef) => {
+        //console.log("Document written with ID: ", docRef.id);
+        clearInputValue();
+        alert("Kayıt işlemi başarıyla tamamlandı!");
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  };
+
+  function GetData() {
+    
+    var List = [];
+    db.collection("films")
+      .get()
+      .then((querySnapshot) => {
+        console.log(querySnapshot);
+        querySnapshot.forEach((doc) => {
+          List.push({
+            id: doc.id,
+            title: doc.data().title,
+            description: doc.data().description,
+            image: doc.data().image,
+            category: doc.data().category,
+            times: doc.data().phone,
+          });
+        });
+        console.log(List);
+        setItems(List);
+      });
+
+  }
+
+  function UpdateData(id) {
+    console.log(id);
+    db.collection("films")
+      .doc(id)
+      .update({ category, title, image, description, time });
+    return;
+  }
+
+  function DeleteData(id) {
+    db.collection("films")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  }
+
+  useEffect(() => {
+    GetData();
+    console.log(items);
+
+  },[]);
 
   return (
     <Container style={{ paddingTop: 40, marginBottom: 100 }}>
@@ -63,10 +135,81 @@ const UserManagement = () => {
         }}
       >
         <Row>
-          <Col
-            style={{ marginLeft: 20, paddingTop: 60, position: "relative" }}
-          ></Col>
-          <Col md="6"></Col>
+          <Col md="7">
+            {items.map((item) => (
+              <>
+                <Row>
+                  <Col md="4">
+                    <center>
+                      <img
+                        style={{ width: 150, height: 250 }}
+                        src={item.image}
+                      />
+                      <br />
+                      <a
+                        style={{
+                          color: "black",
+                          lineHeight: 2,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.title}
+                      </a>
+                    </center>
+                    <hr />
+                    <div className="butonContainer">
+                      <a
+                        onClick={() => setId(item.id)}
+                        style={{
+                          color: "white",
+                          lineHeight: 2,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Seç
+                      </a>
+                    </div>
+                  </Col>
+                  <Col md="4">
+                    <a
+                      style={{
+                        color: "black",
+                        lineHeight: 2,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {item.title}
+                    </a>
+                    <br />
+                    <p>{item.description}</p>
+                    <br />
+                    <a
+                      style={{
+                        color: "black",
+                        lineHeight: 2,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Seans Saatleri
+                    </a>
+                    <br />
+                    <div className="butonContainer-small">
+                      <a
+                        style={{
+                          color: "white",
+                          lineHeight: 2,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.times}
+                      </a>
+                    </div>
+                  </Col>
+                </Row>
+                <hr />
+              </>
+            ))}
+          </Col>
           <Col md="5">
             <Row>
               <Form style={{ alignItems: "center", position: "relative" }}>
@@ -102,7 +245,7 @@ const UserManagement = () => {
                   <Label>Seans Saatleri</Label>
                   <Input
                     onChange={(text) => setTime(text.target.value)}
-                    type="text"
+                    type="number"
                     placeholder="Seans tarihlerini giriniz"
                     value={time}
                   />
@@ -113,7 +256,7 @@ const UserManagement = () => {
                         lineHeight: 2,
                         fontWeight: "bold",
                       }}
-                      onClick={() => InsertMethod()}
+                      onClick={() => InsertItemData()}
                     >
                       Kaydet
                     </a>
@@ -125,7 +268,7 @@ const UserManagement = () => {
                         lineHeight: 2,
                         fontWeight: "bold",
                       }}
-                      //onClick={() => UpdateData(id)}
+                      onClick={() => UpdateData(id)}
                     >
                       Güncelle
                     </a>
@@ -137,7 +280,7 @@ const UserManagement = () => {
                         lineHeight: 2,
                         fontWeight: "bold",
                       }}
-                      // onClick={() => DeleteData(id)}
+                      onClick={() => DeleteData(id)}
                     >
                       Sil
                     </a>
@@ -146,7 +289,7 @@ const UserManagement = () => {
               </Form>
             </Row>
           </Col>
-        </Row>        
+        </Row>
       </Container>
     </Container>
   );

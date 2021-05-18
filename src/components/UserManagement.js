@@ -72,6 +72,7 @@ const UserManagement = () => {
           console.error("Error adding document: ", error);
         });
     } else {
+      alert("Girilen şifreler aynı olmalıdır!");
       console.log("Girdiğiniz Şifreleri kontrol ediniz!");
     }
   };
