@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import { Container, Col, Form, FormGroup, Label, Input, Row } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import firebase from "firebase";
 import firebaseConfig from "../constants/firebase";
 
@@ -8,8 +8,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var db = firebase.firestore();
-
-const UserManagement = () => {
+const ProductManagement = () => {
   const [description, setDescription] = useState(null);
   const [category, setCategory] = useState(null);
   const [title, setTitle] = useState(null);
@@ -18,6 +17,8 @@ const UserManagement = () => {
   const [items, setItems] = useState([]);
   const [id, setId] = useState(null);
 
+  const { productType } = useParams();
+  console.log(productType);
   function clearInputValue() {
     setDescription("");
     setCategory("");
@@ -47,7 +48,7 @@ const UserManagement = () => {
   // }
 
   function GetDataWithId(id) {
-    db.collection("films")
+    db.collection(productType)
       .doc(id)
       .get()
       .then((querySnapshot) => {
@@ -65,7 +66,7 @@ const UserManagement = () => {
   }
 
   const InsertItemData = () => {
-    db.collection("films")
+    db.collection(productType)
       .add({ category, title, image, description, time })
       .then((docRef) => {
         //console.log("Document written with ID: ", docRef.id);
@@ -78,9 +79,8 @@ const UserManagement = () => {
   };
 
   function GetData() {
-    
     var List = [];
-    db.collection("films")
+    db.collection(productType)
       .get()
       .then((querySnapshot) => {
         console.log(querySnapshot);
@@ -91,25 +91,24 @@ const UserManagement = () => {
             description: doc.data().description,
             image: doc.data().image,
             category: doc.data().category,
-            times: doc.data().phone,
+            time: doc.data().time,
           });
         });
         console.log(List);
         setItems(List);
       });
-
   }
 
   function UpdateData(id) {
     console.log(id);
-    db.collection("films")
+    db.collection(productType)
       .doc(id)
       .update({ category, title, image, description, time });
     return;
   }
 
   function DeleteData(id) {
-    db.collection("films")
+    db.collection(productType)
       .doc(id)
       .delete()
       .then(() => {
@@ -122,9 +121,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     GetData();
-    console.log(items);
-
-  },[]);
+  }, []);
 
   return (
     <Container style={{ paddingTop: 40, marginBottom: 100 }}>
@@ -218,7 +215,7 @@ const UserManagement = () => {
                   <Input
                     onChange={(text) => setCategory(text.target.value)}
                     type="text"
-                    placeholder="Tiyatro kategorisi giriniz"
+                    placeholder="Kategori giriniz"
                     value={category}
                   />
                   <Label>Başlık</Label>
@@ -295,4 +292,4 @@ const UserManagement = () => {
   );
 };
 
-export default UserManagement;
+export default ProductManagement;

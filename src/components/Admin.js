@@ -67,25 +67,25 @@ const Admin = () => {
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatre">
                 {" "}
                 Tiyatroları Düzenle{" "}
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/films">
                 {" "}
                 Sinemaları Düzenle
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/talkshow">
                 {" "}
                 TalkShow Düzenle
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatre">
                 {" "}
                 Salonları Düzenle
               </a>

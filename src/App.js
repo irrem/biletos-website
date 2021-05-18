@@ -18,10 +18,7 @@ function App() {
           <Header />
         </div>
         <Switch>
-        <Route path="/productmanagement">
-            <ProductManagement />
-          </Route>
-        <Route path="/usermanagement">
+          <Route path="/usermanagement">
             <UserManagement />
           </Route>
           <Route path="/uyeol">
@@ -32,15 +29,15 @@ function App() {
           </Route>
           <Route path="/biletal/:filmId">
             <BiletAl />
-          </Route>{" "}
+          </Route>
           <Route path="/admin">
             <Admin />
           </Route>
           <Route path="/profil">
             <Profil />
           </Route>
-          <Route path="/admin">
-            <Admin />
+          <Route path="/productmanagement/:productType">
+            <ProductManagement />
           </Route>
           <Route path="/">
             <Anasayfa />
