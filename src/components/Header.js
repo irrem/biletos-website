@@ -32,6 +32,7 @@ const logOut = () => {
     .signOut()
     .then(
       function () {
+        localStorage.removeItem("user-session");
         console.log("Signed Out");
         window.location.href = 'girisyap';
       },
@@ -47,7 +48,7 @@ const createNavItem = ({ href, text, className, type }) => {
     (text == "Kayıt Ol" || text == "Giriş Yap")
   )
     return null;
-  else
+  else 
     return (
       <NavItem>
         <NavLink href={href} className={className}>

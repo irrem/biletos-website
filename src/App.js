@@ -8,6 +8,7 @@ import BiletAl from "./components/BiletAl";
 import Profil from "./components/Profil";
 import Admin from "./components/Admin";
 import UserManagement from "./components/UserManagement";
+import ProductManagement from "./components/ProductManagement";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
           <Header />
         </div>
         <Switch>
+        <Route path="/productmanagement">
+            <ProductManagement />
+          </Route>
         <Route path="/usermanagement">
             <UserManagement />
           </Route>

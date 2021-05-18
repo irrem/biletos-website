@@ -101,7 +101,17 @@ body {
   height: 300px;
   padding: 5px;
 }
-.chair-small {
+.chair-small-y {
+  background-color: #ffea2a;
+  color: white;
+  margin-top: 5px;
+  margin-right: 1px;
+  width: 15px;
+  height: 15px;
+  border-radius: 1px;
+  display: inline-block;
+}
+.chair-small-g {
   background-color: #585054;
   color: white;
   margin-top: 5px;

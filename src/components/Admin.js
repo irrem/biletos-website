@@ -61,13 +61,13 @@ const Admin = () => {
           </Col>
           <Col md="4">
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="/usermanagement">
                 {" "}
                 Kişileri Düzenle{" "}
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement">
                 {" "}
                 Tiyatroları Düzenle{" "}
               </a>

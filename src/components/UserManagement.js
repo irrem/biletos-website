@@ -36,19 +36,22 @@ const UserManagement = () => {
   }
 
   function GetDataWithId(id) {
-    console.log(id);
     db.collection("users")
-      .where("id", "==", id)
+      .doc(id)
       .get()
       .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          setEmail(doc.data().email);
-          setName(doc.data().name);
-          setPassword(doc.data().password);
-          setPhone(doc.data().phone);
-        });
+        // console.log(querySnapshot.id, " => ", querySnapshot.data());
+        setEmail(querySnapshot.data().email);
+        setName(querySnapshot.data().name);
+        setPassword(querySnapshot.data().password);
+        setPasswordRepeat(querySnapshot.data().password);
+        setPhone(querySnapshot.data().phone);
+        console.log(email);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
-    console.log(email);
+    setId(id);
   }
 
   const InsertUserData = () => {
@@ -61,7 +64,7 @@ const UserManagement = () => {
           phone: phone,
         })
         .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
+          //console.log("Document written with ID: ", docRef.id);
           clearInputValue();
           alert("Kayıt işlemi başarıyla tamamlandı!");
         })
@@ -91,8 +94,24 @@ const UserManagement = () => {
         setUsersList(List);
       });
   };
- 
-  
+  function UpdateData(id) {
+    console.log(id);
+    db.collection("users").doc(id).update({
+      email,
+      name,
+      password,
+      phone,
+    });
+    return;
+  }
+  function DeleteData(id) {
+    db.collection("users").doc(id).delete().then(() => {
+      console.log("Document successfully deleted!");
+  }).catch((error) => {
+      console.error("Error removing document: ", error);
+  });
+  }
+
   useEffect(() => {
     GetData();
   });
@@ -193,7 +212,7 @@ const UserManagement = () => {
                   </Col>
                   <Col md="1">
                     <div className="chooseBox">
-                      <a>Seç</a>
+                      <a onClick={() => GetDataWithId(item.id)}>Seç</a>
                     </div>
                   </Col>
                 </Row>
@@ -215,7 +234,7 @@ const UserManagement = () => {
             <div className="butonContainer-small">
               <a
                 style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
-                onClick={() => GetDataWithId(id)}
+                onClick={() => UpdateData(id)}
               >
                 {" "}
                 Güncelle{" "}
@@ -223,8 +242,10 @@ const UserManagement = () => {
             </div>
 
             <div className="butonContainer-small">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}>
-                {" "}
+              <a
+                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
+                onClick={() => DeleteData(id)}
+              >
                 Sil
               </a>
             </div>

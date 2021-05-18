@@ -5,7 +5,7 @@ import firebase from "firebase";
 import firebaseConfig from "../constants/firebase";
 const BiletAl = (props) => {
   const [chair, setChair] = useState([]);
-  const [color, setColor] = useState(null);
+  const [className, setClassname] = useState(null);
   const [title, setTitle] = useState(null);
   const [image, setImage] = useState(null);
   const [times, setTime] = useState([]);
@@ -15,17 +15,19 @@ const BiletAl = (props) => {
     firebase.initializeApp(firebaseConfig);
   }
   let { filmId } = useParams();
+ 
   useEffect(() => {
     getFilm(filmId);
-    var i = 0;
+    var id = 0;
     var chairList = [];
-    for (i; i < 108; i++) {
+    for (id; id < 108; id++) {
       chairList.push({
-        id: i,
+        id,
       });
     }
     setChair(chairList);
-    setColor("black");
+    console.log(chair);
+    setClassname("chair-small-y"); // burada classname için props gönderiliyor ki div içeriği değişsin.
   }, []);
 
   function getFilm(filmId) {
@@ -55,6 +57,34 @@ const BiletAl = (props) => {
         console.error(error);
       });
   }
+  function getChair(filmId) {
+    var hourList = [];
+
+    const dbRef = firebase.database().ref();
+
+    dbRef
+      .child("films")
+      .child(filmId)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          for (const key in snapshot.val().times) {
+            hourList.push(snapshot.val().times[key]);
+          }
+          setTitle(snapshot.val().title);
+          setImage(snapshot.val().image);
+          setDescription(snapshot.val().description);
+          console.log(hourList);
+          setTime(hourList);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
 
   return (
     <Container style={{ paddingTop: 40 }}>
@@ -95,7 +125,7 @@ const BiletAl = (props) => {
                     <h4> Koltuk Seçiniz</h4>
                     {chair.map((i) => (
                       <>
-                        <div className="chair-small"></div>
+                        <div className={className}></div>
                       </>
                     ))}
                   </div>
