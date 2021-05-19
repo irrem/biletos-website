@@ -19,6 +19,19 @@ import { Link, useParams } from 'react-router-dom';
 import firebase from 'firebase';
 import firebaseConfig from '../constants/firebase';
 
+function TimeFormatter(time) {
+  var d = new Date(time);
+  var hr = d.getHours()-2;
+  var min = d.getMinutes();
+  if (min < 10) {
+    min = '0' + min;
+  }
+  if (hr > 12) {
+    hr -= 12;
+  }
+  return hr + ':' + min;
+}
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -104,6 +117,11 @@ const ProductManagement = () => {
             plan: createEmptyPlan()
           })
           .then(() => {
+            setItems([]);
+
+            getShowRooms();
+            GetData();
+            getSessions();
             console.log('Inserted.');
           })
           .catch(error => {
@@ -130,10 +148,38 @@ const ProductManagement = () => {
             category: doc.data().category,
             time: doc.data().time
           });
+          console.log('srlam doc');
+          console.log(doc);
         });
+        console.log('---------');
         console.log(List);
-        setItems(List);
+        getSessions(List);
       });
+  }
+
+  async function getSessions(filmitem) {
+    console.log(filmitem);
+    console.log('bura gitdi');
+    var newList = [];
+    for (const key in filmitem) {
+      await firebase
+        .database()
+        .ref('showrooms')
+        .once('value', data => {
+          for (const key1 in data.toJSON()) {
+            for (const key2 in data.toJSON()[key1].session) {
+              const sessionData = data.toJSON()[key1].session[key2];
+              if (sessionData.productId == filmitem[key].id) {
+                filmitem[key].time = sessionData.hour;
+                newList.push(filmitem[key]);
+                console.log('selam');
+              }
+            }
+          }
+        });
+    }
+    setItems(newList.reverse());
+    console.log('bura geldi');
   }
 
   function UpdateData(id) {
@@ -147,7 +193,11 @@ const ProductManagement = () => {
       .doc(id)
       .delete()
       .then(() => {
-        console.log('Document successfully deleted!');
+        setItems([]);
+
+        getShowRooms();
+        GetData();
+        getSessions();
       })
       .catch(error => {
         console.error('Error removing document: ', error);
@@ -170,6 +220,7 @@ const ProductManagement = () => {
   useEffect(() => {
     getShowRooms();
     GetData();
+    getSessions();
   }, []);
 
   return (
@@ -182,13 +233,40 @@ const ProductManagement = () => {
       >
         <Row>
           <Col md='7'>
-            {items.map(item => (
-              <>
-                <Row>
-                  <Col md='4'>
-                    <center>
-                      <img style={{ width: 150, height: 250 }} src={item.image} />
-                      <br />
+            {items.length ? (
+              items.map((item, index) => (
+                <div key={index}>
+                  <Row>
+                    {index}
+                    <Col md='4'>
+                      <center>
+                        <img style={{ width: 150, height: 250 }} src={item.image} />
+                        <br />
+                        <a
+                          style={{
+                            color: 'black',
+                            lineHeight: 2,
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          {item.title}
+                        </a>
+                      </center>
+                      <hr />
+                      <div className='butonContainer'>
+                        <a
+                          onClick={() => GetDataWithId(item.id)}
+                          style={{
+                            color: 'white',
+                            lineHeight: 2,
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          Seç
+                        </a>
+                      </div>
+                    </Col>
+                    <Col md='4'>
                       <a
                         style={{
                           color: 'black',
@@ -198,60 +276,38 @@ const ProductManagement = () => {
                       >
                         {item.title}
                       </a>
-                    </center>
-                    <hr />
-                    <div className='butonContainer'>
+                      <br />
+                      <p>{item.description}</p>
+                      <br />
                       <a
-                        onClick={() => setId(item.id)}
                         style={{
-                          color: 'white',
+                          color: 'black',
                           lineHeight: 2,
                           fontWeight: 'bold'
                         }}
                       >
-                        Seç
+                        Seans Saatleri
                       </a>
-                    </div>
-                  </Col>
-                  <Col md='4'>
-                    <a
-                      style={{
-                        color: 'black',
-                        lineHeight: 2,
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      {item.title}
-                    </a>
-                    <br />
-                    <p>{item.description}</p>
-                    <br />
-                    <a
-                      style={{
-                        color: 'black',
-                        lineHeight: 2,
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      Seans Saatleri
-                    </a>
-                    <br />
-                    <div className='butonContainer-small'>
-                      <a
-                        style={{
-                          color: 'white',
-                          lineHeight: 2,
-                          fontWeight: 'bold'
-                        }}
-                      >
-                        {item.times}
-                      </a>
-                    </div>
-                  </Col>
-                </Row>
-                <hr />
-              </>
-            ))}
+                      <br />
+                      <div className='butonContainer-small'>
+                        <a
+                          style={{
+                            color: 'white',
+                            lineHeight: 2,
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          {TimeFormatter(item.time)}
+                        </a>
+                      </div>
+                    </Col>
+                  </Row>
+                  <hr />
+                </div>
+              ))
+            ) : (
+              <h2>Yükleniyor</h2>
+            )}
           </Col>
           <Col md='5'>
             <Row>
@@ -300,14 +356,14 @@ const ProductManagement = () => {
                     type='datetime-local'
                     placeholder='Seans tarihlerini giriniz'
                   />
-                  <div className='butonContainer-small'>
+                  <br />
+                  <div onClick={() => InsertItemData()} className='butonContainer-small'>
                     <a
                       style={{
                         color: 'white',
                         lineHeight: 2,
                         fontWeight: 'bold'
                       }}
-                      onClick={() => InsertItemData()}
                     >
                       Kaydet
                     </a>
@@ -324,14 +380,13 @@ const ProductManagement = () => {
                       Güncelle
                     </a>
                   </div>
-                  <div className='butonContainer-small'>
+                  <div onClick={() => DeleteData(id)} className='butonContainer-small'>
                     <a
                       style={{
                         color: 'white',
                         lineHeight: 2,
                         fontWeight: 'bold'
                       }}
-                      onClick={() => DeleteData(id)}
                     >
                       Sil
                     </a>
