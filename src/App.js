@@ -9,6 +9,7 @@ import Profil from "./components/Profil";
 import Admin from "./components/Admin";
 import UserManagement from "./components/UserManagement";
 import ProductManagement from "./components/ProductManagement";
+import SessionManagement from "./components/SessionManagement";
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route path="/biletal/:filmId">
             <BiletAl />
+          </Route>
+          <Route path="/sessionmanagement">
+            <SessionManagement />
           </Route>
           <Route path="/admin">
             <Admin />

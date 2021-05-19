@@ -85,9 +85,9 @@ const Admin = () => {
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatre">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement">
                 {" "}
-                Salonları Düzenle
+                Seans ve Salonları Düzenle
               </a>
             </div>
           </Col>
