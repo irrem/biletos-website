@@ -7,6 +7,7 @@ import Anasayfa from "./components/Anasayfa";
 import BiletAl from "./components/BiletAl";
 import Profil from "./components/Profil";
 import Admin from "./components/Admin";
+import Payment from "./components/Payment";
 import UserManagement from "./components/UserManagement";
 import ProductManagement from "./components/ProductManagement";
 import SessionManagement from "./components/SessionManagement";
@@ -28,6 +29,12 @@ function App() {
           <Route path="/girisyap">
             <GirisYap />
           </Route>
+          <Route path="/payment">
+            <Payment />
+          </Route>
+          <Route path="/profile">
+            <Profil />
+          </Route>
           <Route path="/biletal/:filmId">
             <BiletAl />
           </Route>
@@ -36,9 +43,6 @@ function App() {
           </Route>
           <Route path="/admin">
             <Admin />
-          </Route>
-          <Route path="/profil">
-            <Profil />
           </Route>
           <Route path="/productmanagement/:productType">
             <ProductManagement />
