@@ -244,8 +244,6 @@ const SessionManagement = () => {
                         color: 'white',
                         lineHeight: 2,
                         fontWeight: 'bold'
-
-
                       }}
                     >
                       Güncelle

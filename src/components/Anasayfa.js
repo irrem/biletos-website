@@ -7,12 +7,11 @@ import firebaseConfig from "../constants/firebase";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-var db = firebase.firestore();
 
 const AnaSayfa = ({ saveFilm }) => {
   const [items, setItems] = useState([]);
   const [type, setType] = useState(null);
-
+  
   useEffect(() => {
     var user = firebase.auth().currentUser;
 
@@ -21,32 +20,37 @@ const AnaSayfa = ({ saveFilm }) => {
     } else {
       console.log("no log");
     }
-    GetData();
+    getAllThings();
   }, []);
 
-  function GetData() {
-    var List = [];
-    db.collection("films")
-      .get()
-      .then((querySnapshot) => {
-        console.log(querySnapshot);
-        querySnapshot.forEach((doc) => {
+  function getAllThings() {
+    firebase
+      .database()
+      .ref("films")
+      .on("value", (data) => {
+        const films = data.toJSON();
+        var List = [];
+        for (const key in films) {
+          var HourList = [];
+          for (const key2 in films[key].times) {
+            HourList.push(films[key].times[key2]);
+          }
           List.push({
-            id: doc.id,
-            title: doc.data().title,
-            description: doc.data().description,
-            image: doc.data().image,
-            category: doc.data().category,
-            time: doc.data().time,
+            id: key,
+            title: films[key].title,
+            image: films[key].image,
+            description: films[key].description,
+            times: HourList,
           });
-        });
+        }
         console.log(List);
         setItems(List);
       });
-  }
+  };
+  
   function getFilm(filmId) {
     saveFilm(filmId);
-  }
+  };
 
   return (
     <Container>
@@ -73,7 +77,7 @@ const AnaSayfa = ({ saveFilm }) => {
                         {item.title}
                       </a>
                     </center>
-                    <hr />{" "}
+                    <hr />
                     <div className="butonContainer">
                       <Link
                         to={`biletal/${item.id}`}
@@ -110,18 +114,19 @@ const AnaSayfa = ({ saveFilm }) => {
                       Seans Saatleri
                     </a>
                     <br />
-
-                    <div className="butonContainer-small">
-                      <a
-                        style={{
-                          color: "white",
-                          lineHeight: 2,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {item.hour}
-                      </a>
-                    </div>
+                    {item.times.map((item) => (
+                      <div className="butonContainer-small">
+                        <a
+                          style={{
+                            color: "white",
+                            lineHeight: 2,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.hour}
+                        </a>
+                      </div>
+                    ))}
                   </Col>
                 </Row>
                 <hr />

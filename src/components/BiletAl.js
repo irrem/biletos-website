@@ -8,20 +8,16 @@ const BiletAl = (props) => {
   const [className, setClassname] = useState(null);
   const [title, setTitle] = useState(null);
   const [image, setImage] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [id, setId] = useState(null);
-  const [time, setTime] = useState([]);
+  const [times, setTime] = useState([]);
   const [description, setDescription] = useState(null);
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
   let { filmId } = useParams();
-
-  var db = firebase.firestore();
-
+ 
   useEffect(() => {
-    GetDataWithId(filmId);
+    getFilm(filmId);
     var id = 0;
     var chairList = [];
     for (id; id < 108; id++) {
@@ -29,39 +25,66 @@ const BiletAl = (props) => {
         id,
       });
     }
-
     setChair(chairList);
     console.log(chair);
     setClassname("chair-small-y"); // burada classname için props gönderiliyor ki div içeriği değişsin.
   }, []);
 
-  function GetDataWithId() {
-    db.collection("films")
-      .doc(filmId)
+  function getFilm(filmId) {
+    var hourList = [];
+
+    const dbRef = firebase.database().ref();
+
+    dbRef
+      .child("films")
+      .child(filmId)
       .get()
-      .then((querySnapshot) => {
-        // console.log(querySnapshot.id, " => ", querySnapshot.data());
-        setTitle(querySnapshot.data().title);
-        setDescription(querySnapshot.data().description);
-        setImage(querySnapshot.data().image);
-        setCategory(querySnapshot.data().category);
-        setTime(querySnapshot.data().times);
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          for (const key in snapshot.val().times) {
+            hourList.push(snapshot.val().times[key]);
+          }
+          setTitle(snapshot.val().title);
+          setImage(snapshot.val().image);
+          setDescription(snapshot.val().description);
+          console.log(hourList);
+          setTime(hourList);
+        } else {
+          console.log("No data available");
+        }
       })
       .catch((error) => {
-        console.log("Error getting documents: ", error);
+        console.error(error);
       });
-    setId(id);
+  }
+  function getChair(filmId) {
+    var hourList = [];
+
+    const dbRef = firebase.database().ref();
+
+    dbRef
+      .child("films")
+      .child(filmId)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          for (const key in snapshot.val().times) {
+            hourList.push(snapshot.val().times[key]);
+          }
+          setTitle(snapshot.val().title);
+          setImage(snapshot.val().image);
+          setDescription(snapshot.val().description);
+          console.log(hourList);
+          setTime(hourList);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-  const getChair = () => {
-    db.collection("chair")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-        });
-      });
-  };
 
   return (
     <Container style={{ paddingTop: 40 }}>
@@ -84,7 +107,7 @@ const BiletAl = (props) => {
                   </a>
                 </center>
                 <hr />
-                <div className="butonContainer" onClick={()=>window.location.href="payment"}>Bilet Al</div>
+                <div className="butonContainer">Bilet Al</div>
               </Col>
               <Col md="5">
                 <Container>
@@ -131,17 +154,21 @@ const BiletAl = (props) => {
                   Seans Saatleri
                 </a>
                 <br />
-                <div className="butonContainer-small">
-                  <a
-                    style={{
-                      color: "white",
-                      lineHeight: 2,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {time}
-                  </a>
-                </div>
+                {times.map((item) => (
+                  <>
+                    <div className="butonContainer-small">
+                      <a
+                        style={{
+                          color: "white",
+                          lineHeight: 2,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.hour}
+                      </a>
+                    </div>
+                  </>
+                ))}
                 <br />
               </Col>
             </Row>
