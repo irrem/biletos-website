@@ -9,6 +9,19 @@ if (!firebase.apps.length) {
 }
 var db = firebase.firestore();
 
+function TimeFormatter(time) {
+  var d = new Date(time);
+  var hr = d.getHours();
+  var min = d.getMinutes();
+  if (min < 10) {
+    min = '0' + min;
+  }
+  if (hr > 12) {
+    hr -= 12;
+  }
+  return hr + ':' + min;
+}
+
 const SessionManagement = () => {
   const [time, setTime] = useState([]);
   const [items, setItems] = useState([]);
@@ -28,7 +41,7 @@ const SessionManagement = () => {
   }, []);
 
   function GetDataWithId(id) {
-    db.collection('films')
+    db.collection(productType)
       .doc(id)
       .get()
       .then(querySnapshot => {
@@ -59,19 +72,20 @@ const SessionManagement = () => {
         plan: createEmptyPlan()
       })
       .then(() => {
-        alert('eklendi');
+        setItems([]);
+        GetData();
+        getShowRooms();
       })
       .catch(error => {
         console.log(error);
       });
   }
 
- function GetData() {
+  function GetData() {
     var List = [];
-    db.collection('films')
+    db.collection(productType)
       .get()
       .then(querySnapshot => {
-        console.log(querySnapshot);
         querySnapshot.forEach(doc => {
           List.push({
             id: doc.id,
@@ -81,37 +95,36 @@ const SessionManagement = () => {
             category: doc.data().category,
             time: doc.data().time
           });
-          console.log('srlam doc');
-          console.log(doc);
         });
-        console.log('---------');
-        console.log(List);
         getSessions(List);
       });
   }
   async function getSessions(filmitem) {
-    console.log(filmitem);
-    console.log('bura gitdi');
     var newList = [];
     for (const key in filmitem) {
+      var filmSessionHours = [];
       await firebase
         .database()
         .ref('showrooms')
         .once('value', data => {
           for (const key1 in data.toJSON()) {
             for (const key2 in data.toJSON()[key1].session) {
-              const sessionData = data.toJSON()[key1].session[key2];
-              if (sessionData.productId == filmitem[key].id) {
-                filmitem[key].time = sessionData.hour;
-                newList.push(filmitem[key]);
-                return
+              if (data.toJSON()[key1].session[key2].productId == filmitem[key].id) {
+                filmSessionHours.push({
+                  session: data.toJSON()[key1].showroomName,
+                  sessionId: key1,
+                  hour: data.toJSON()[key1].session[key2].hour,
+                  id: key2
+                });
               }
             }
           }
         });
+      filmitem[key].times = filmSessionHours;
+      newList.push(filmitem[key]);
     }
     setItems(newList.reverse());
-    console.log('bura geldi');
+    console.log(newList);
   }
   function getShowRooms() {
     var List = [];
@@ -123,7 +136,19 @@ const SessionManagement = () => {
           List.push({ id: key, name: data.toJSON()[key].showroomName });
         }
         setShowrooms(List);
+        console.log(List);
       });
+  }
+
+  async function deleteSession(sessionId, session) {
+    console.log('showrooms/' + sessionId + '/session/' + session);
+    await firebase
+      .database()
+      .ref('showrooms/' + sessionId + '/session/' + session)
+      .remove();
+    await setItems([]);
+    await GetData();
+    await getShowRooms();
   }
 
   return (
@@ -171,12 +196,16 @@ const SessionManagement = () => {
                     <a
                       style={{
                         color: 'black',
-                        lineHeight: 2,
-                        fontWeight: 'bold'
+                        lineHeight: 2
                       }}
                     >
-                      {item.title}
+                      <b style={{ color: 'red' }}>{item.title}</b>
+                      <br />
+                      Salon:<b> {item.showroom}</b>
                     </a>
+                    <br />
+                    <br />
+                    <b>Açıklama</b>
                     <br />
                     <p>{item.description}</p>
                     <br />
@@ -190,17 +219,23 @@ const SessionManagement = () => {
                       Seans Saatleri
                     </a>
                     <br />
-                    <div className='butonContainer-small'>
-                      <a
-                        style={{
-                          color: 'white',
-                          lineHeight: 2,
-                          fontWeight: 'bold'
-                        }}
-                      >
-                        {item.times}
-                      </a>
-                    </div>
+                    {item.times.length ? (
+                      item.times.map(item2 => (
+                        <div>
+                          Salon Adı: <b>{item2.session}</b>
+                          <br />
+                          Saati: <b>{TimeFormatter(item2.hour)}</b>
+                          <a
+                            onClick={() => deleteSession(item2.sessionId, item2.id)}
+                            style={{ marginLeft: 10, textDecoration: 'underline', color: 'red' }}
+                          >
+                            SİL
+                          </a>
+                        </div>
+                      ))
+                    ) : (
+                      <a>Seans Bulunmuyor...</a>
+                    )}
                   </Col>
                 </Row>
                 <hr />
@@ -236,17 +271,6 @@ const SessionManagement = () => {
                       }}
                     >
                       Kaydet
-                    </a>
-                  </div>
-                  <div className='butonContainer-small'>
-                    <a
-                      style={{
-                        color: 'white',
-                        lineHeight: 2,
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      Güncelle
                     </a>
                   </div>
                 </FormGroup>

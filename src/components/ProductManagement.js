@@ -21,7 +21,7 @@ import firebaseConfig from '../constants/firebase';
 
 function TimeFormatter(time) {
   var d = new Date(time);
-  var hr = d.getHours()-2;
+  var hr = d.getHours() - 2;
   var min = d.getMinutes();
   if (min < 10) {
     min = '0' + min;
@@ -95,38 +95,14 @@ const ProductManagement = () => {
     setId(id);
   }
 
-  const createEmptyPlan = () => {
-    var Plan = [];
-    for (var i = 0; i < 100; i++) {
-      Plan.push({ id: '0' });
-    }
-    return Plan;
-  };
-
   const InsertItemData = () => {
     db.collection(productType)
       .add({ category, title, image, description })
       .then(docRef => {
-        firebase
-          .database()
-          .ref('showrooms/' + selectedShowroom + '/session')
-          .push()
-          .set({
-            hour: time,
-            productId: docRef.id,
-            plan: createEmptyPlan()
-          })
-          .then(() => {
-            setItems([]);
-
-            getShowRooms();
-            GetData();
-            getSessions();
-            console.log('Inserted.');
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        setItems([]);
+        getShowRooms();
+        GetData();
+        getSessions();
       })
       .catch(error => {
         console.error('Error adding document: ', error);
@@ -138,7 +114,6 @@ const ProductManagement = () => {
     db.collection(productType)
       .get()
       .then(querySnapshot => {
-        console.log(querySnapshot);
         querySnapshot.forEach(doc => {
           List.push({
             id: doc.id,
@@ -148,44 +123,63 @@ const ProductManagement = () => {
             category: doc.data().category,
             time: doc.data().time
           });
-          console.log('srlam doc');
-          console.log(doc);
         });
-        console.log('---------');
-        console.log(List);
         getSessions(List);
       });
   }
 
+  function GetData() {
+    var List = [];
+    db.collection(productType)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          List.push({
+            id: doc.id,
+            title: doc.data().title,
+            description: doc.data().description,
+            image: doc.data().image,
+            category: doc.data().category,
+            time: doc.data().time
+          });
+        });
+        getSessions(List);
+      });
+  }
   async function getSessions(filmitem) {
-    console.log(filmitem);
-    console.log('bura gitdi');
     var newList = [];
     for (const key in filmitem) {
+      var filmSessionHours = [];
       await firebase
         .database()
         .ref('showrooms')
         .once('value', data => {
           for (const key1 in data.toJSON()) {
             for (const key2 in data.toJSON()[key1].session) {
-              const sessionData = data.toJSON()[key1].session[key2];
-              if (sessionData.productId == filmitem[key].id) {
-                filmitem[key].time = sessionData.hour;
-                newList.push(filmitem[key]);
-                console.log('selam');
+              if (data.toJSON()[key1].session[key2].productId == filmitem[key].id) {
+                filmSessionHours.push({
+                  session: data.toJSON()[key1].showroomName,
+                  sessionId: key1,
+                  hour: data.toJSON()[key1].session[key2].hour,
+                  id: key2
+                });
               }
             }
           }
         });
+      filmitem[key].times = filmSessionHours;
+      newList.push(filmitem[key]);
     }
     setItems(newList.reverse());
-    console.log('bura geldi');
   }
 
   function UpdateData(id) {
     console.log(id);
-    db.collection(productType).doc(id).update({ category, title, image, description, time });
-    return;
+    db.collection(productType).doc(id).update({ category, title, image, description });
+    setItems([]);
+    getShowRooms();
+    GetData();
+    getSessions();
   }
 
   function DeleteData(id) {
@@ -279,27 +273,6 @@ const ProductManagement = () => {
                       <br />
                       <p>{item.description}</p>
                       <br />
-                      <a
-                        style={{
-                          color: 'black',
-                          lineHeight: 2,
-                          fontWeight: 'bold'
-                        }}
-                      >
-                        Seans Saatleri
-                      </a>
-                      <br />
-                      <div className='butonContainer-small'>
-                        <a
-                          style={{
-                            color: 'white',
-                            lineHeight: 2,
-                            fontWeight: 'bold'
-                          }}
-                        >
-                          {TimeFormatter(item.time)}
-                        </a>
-                      </div>
                     </Col>
                   </Row>
                   <hr />
@@ -341,21 +314,6 @@ const ProductManagement = () => {
                     placeholder='Afiş görsel adresini giriniz'
                     value={image}
                   />{' '}
-                  <Label>Salon Seçiniz</Label>
-                  <br />
-                  <select onChange={e => setSelectedShowroom(e.target.value)}>
-                    <option>Seçiniz...</option>
-                    {showrooms.map(item => (
-                      <option value={item.id}>{item.name}</option>
-                    ))}
-                  </select>
-                  <br />
-                  <Label>Seans Saatleri</Label>
-                  <Input
-                    onChange={e => setTime(e.target.value)}
-                    type='datetime-local'
-                    placeholder='Seans tarihlerini giriniz'
-                  />
                   <br />
                   <div onClick={() => InsertItemData()} className='butonContainer-small'>
                     <a
@@ -365,7 +323,7 @@ const ProductManagement = () => {
                         fontWeight: 'bold'
                       }}
                     >
-                      Kaydet
+                      Ekle
                     </a>
                   </div>
                   <div className='butonContainer-small'>

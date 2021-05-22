@@ -28,10 +28,10 @@ function App() {
           <Route path="/girisyap">
             <GirisYap />
           </Route>
-          <Route path="/biletal/:filmId">
+          <Route path="/biletal/:productType/:productId">
             <BiletAl />
           </Route>
-          <Route path="/sessionmanagement">
+          <Route path="/sessionmanagement/:productType">
             <SessionManagement />
           </Route>
           <Route path="/admin">
