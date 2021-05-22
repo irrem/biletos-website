@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'reactstrap';
+import jwt from 'jsonwebtoken';
 import firebase from 'firebase';
 import firebaseConfig from '../constants/firebase';
 const BiletAl = props => {
@@ -13,7 +14,7 @@ const BiletAl = props => {
   const [times, setTime] = useState([]);
   const [description, setDescription] = useState(null);
   const [selectedSessionPlan, setSelectedSessionPlan] = useState([]);
-  const [selectedChair, setSelectedChair] = useState(null);
+  const [selectedChair, setSelectedChair] = useState([]);
 
   function TimeFormatter(time) {
     var d = new Date(time);
@@ -75,9 +76,42 @@ const BiletAl = props => {
     console.log(data);
   }
 
+  function buyTicket(data) {
+    jwt.verify(localStorage.getItem('user-session'), 'biletos-password', function (err, token) {
+      firebase
+        .database()
+        .ref(
+          'showrooms/' +
+            selectedChair.showroomId +
+            '/session/' +
+            selectedChair.sessionId +
+            '/plan/' +
+            selectedChair.chairId
+        )
+        .update({
+          id: token[0].email
+        })
+        .then(() => {
+          db.collection('users')
+            .where('email', '==', token[0].email)
+            .get()
+            .then(querySnapshot =>
+              // bu emaile ait id querySnapshot.docs[0].id
 
-  function buyTicket(params) {
-    
+              db
+                .collection('users')
+                .doc(querySnapshot.docs[0].id)
+                .collection('tickets')
+                .add(selectedChair)
+            );
+        });
+    });
+
+    // db.collection(productType).doc(data.showroomId).update({ category, title, image, description });
+    // setItems([]);
+    // getShowRooms();
+    // GetData();
+    // getSessions();
   }
 
   return (
@@ -101,7 +135,9 @@ const BiletAl = props => {
                   </a>
                 </center>
                 <hr />
-                <div className='butonContainer'>Bilet Al</div>
+                <a onClick={() => buyTicket(items)} className='butonContainer'>
+                  Bilet Al
+                </a>
               </Col>
               <Col md='5'>
                 <Container>
@@ -122,9 +158,22 @@ const BiletAl = props => {
                     <h4> Koltuk Seçiniz</h4>
                     {selectedSessionPlan?.plan?.map((item, index) => (
                       <a
-                        onClick={() => setSelectedChair(index)}
+                        onClick={() =>
+                          item.id != 0
+                            ? alert('Bu koltuk ' + item.id + ' tarafından alınmış')
+                            : setSelectedChair({
+                                showroomId: selectedSessionPlan?.showroomId,
+                                sessionId: selectedSessionPlan?.sessionId,
+                                chairId: index
+                              })
+                        }
                         style={{
-                          backgroundColor: selectedChair == index ? 'lightgreen' : 'gray',
+                          backgroundColor:
+                            item.id != 0
+                              ? 'red'
+                              : selectedChair.chairId == index
+                              ? 'lightgreen'
+                              : 'gray',
                           marginLeft: 5,
                           lineHeight: 3,
                           padding: 5,
@@ -152,7 +201,7 @@ const BiletAl = props => {
                 <br />
                 {selectedChair != null ? (
                   <a>
-                    Seçilen Koltuk No: <b>{selectedChair}</b>
+                    Seçilen Koltuk No: <b>{selectedChair.chairId}</b>
                   </a>
                 ) : null}
                 <br />
