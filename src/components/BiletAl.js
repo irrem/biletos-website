@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'reactstrap';
 import jwt from 'jsonwebtoken';
@@ -10,9 +10,6 @@ const BiletAl = props => {
   const [title, setTitle] = useState(null);
 
   const [items, setItems] = useState([]);
-  const [image, setImage] = useState(null);
-  const [times, setTime] = useState([]);
-  const [description, setDescription] = useState(null);
   const [selectedSessionPlan, setSelectedSessionPlan] = useState([]);
   const [selectedChair, setSelectedChair] = useState([]);
 
@@ -106,12 +103,6 @@ const BiletAl = props => {
             );
         });
     });
-
-    // db.collection(productType).doc(data.showroomId).update({ category, title, image, description });
-    // setItems([]);
-    // getShowRooms();
-    // GetData();
-    // getSessions();
   }
 
   return (
@@ -170,17 +161,18 @@ const BiletAl = props => {
                         style={{
                           backgroundColor:
                             item.id != 0
-                              ? 'red'
+                              ? 'gray'
                               : selectedChair.chairId == index
                               ? 'lightgreen'
-                              : 'gray',
+                              : 'lightgray',
                           marginLeft: 5,
                           lineHeight: 3,
                           padding: 5,
-                          fontSize: 15
+                          fontSize: 15,
+                          cursor:'pointer'
                         }}
                       >
-                        O
+                       o
                       </a>
                     ))}
                   </div>
@@ -217,12 +209,12 @@ const BiletAl = props => {
                 <br />
                 {items?.hours?.length ? (
                   items?.hours?.map(item2 => (
-                    <div style={{ height: 200 }} className='butonContainer-small'>
+                    <div style={{ height: 100 }} className='butonContainer-left'>
                       <a
                         style={{
                           color: 'white',
                           fontWeight: 'bold',
-                          fontSize: 10
+                          fontSize: 15
                         }}
                         onClick={() =>
                           changeSessionPlan({

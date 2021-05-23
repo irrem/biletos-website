@@ -5,7 +5,7 @@ import UyeOl from "./components/UyeOl";
 import GirisYap from "./components/GirisYap";
 import Anasayfa from "./components/Anasayfa";
 import BiletAl from "./components/BiletAl";
-import Profil from "./components/Profil";
+import Profile from "./components/Profile";
 import Admin from "./components/Admin";
 import UserManagement from "./components/UserManagement";
 import ProductManagement from "./components/ProductManagement";
@@ -37,8 +37,8 @@ function App() {
           <Route path="/admin">
             <Admin />
           </Route>
-          <Route path="/profil">
-            <Profil />
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/productmanagement/:productType">
             <ProductManagement />
