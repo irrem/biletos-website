@@ -5,6 +5,7 @@ import UyeOl from "./components/UyeOl";
 import GirisYap from "./components/GirisYap";
 import Anasayfa from "./components/Anasayfa";
 import BiletAl from "./components/BiletAl";
+import Payment from "./components/Payment";
 import Profile from "./components/Profile";
 import Admin from "./components/Admin";
 import UserManagement from "./components/UserManagement";
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route path="/admin">
             <Admin />
+          </Route>
+          <Route path="/payment">
+            <Payment />
           </Route>
           <Route path="/profile">
             <Profile />
