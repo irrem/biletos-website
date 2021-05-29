@@ -148,8 +148,19 @@ body {
   font-size: 15px !important;
   display: inline-block;
   border-radius: 3px;
-}.chooseBox:hover {
+}
+.chooseBox:hover {
   cursor: pointer;
   background-color: rgb(48, 46, 46);
   transition: 0.9s;
+}
+.sessionBox{
+  background-color: #d61471;
+  color: white;
+  width: 120px;
+  height: 70px;
+  text-align: center;
+  font-size: 15px ;
+  display: inline-block;
+  border-radius: 3px;
 }

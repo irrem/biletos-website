@@ -17,12 +17,12 @@ if (!firebase.apps.length) {
 }
 
 const links = [
-  { href: "anasayfa", text: "", type: "icon", className: "menuItem" },
-  { href: "anasayfa", text: "Anasayfa", type: "text", className: "menuItem" },
-  { href: "uyeol", text: "Kayıt Ol", type: "text", className: "menuItem" },
-  { href: "girisyap", text: "Giriş Yap", type: "text", className: "menuItem" },
-  { href: "profile", text: "Profil", type: "text", className: "menuItem" },
-  { href: "payment", text: "Payment", type: "text", className: "menuItem" },
+  { href: "../anasayfa", text: "", type: "icon", className: "menuItem" },
+  { href: "../anasayfa", text: "Anasayfa", type: "text", className: "menuItem" },
+  { href: "../uyeol", text: "Kayıt Ol", type: "text", className: "menuItem" },
+  { href: "../girisyap", text: "Giriş Yap", type: "text", className: "menuItem" },
+  { href: "../profile", text: "Profil", type: "text", className: "menuItem" },
+  { href: "../payment", text: "Payment", type: "text", className: "menuItem" },
   { href: "admin", text: "Admin", type: "text", className: "menuItem" }
 ];
 

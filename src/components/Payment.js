@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import jwt from "jsonwebtoken";
 import firebase from "firebase";
 import firebaseConfig from "../constants/firebase";
 if (!firebase.apps.length) {
@@ -10,10 +11,37 @@ var db = firebase.firestore();
 
 const Payment = () => {
   const [cvc, setCvc] = useState(null);
+  const [totalMoney, setTotalMoney] = useState(null);
   const [cardNumber, setCardNumber] = useState(null);
   const [cardName, setCardName] = useState(null);
   const [cardDeadline, setCardDeadline] = useState(null);
 
+  function payment() {
+    setTotalMoney("24,90");
+    console.log(totalMoney);
+    jwt.verify(
+      localStorage.getItem("user-session"),
+      "biletos-password",
+      function (err, token) {
+        db.collection("users")
+          .where("email", "==", token[0].email)
+          .get()
+          .then((querySnapshot) =>
+            db
+              .collection("users")
+              .doc(querySnapshot.docs[0].id)
+              .collection("receipts")
+              .add({ cardNumber, cardName, totalMoney })
+              .then((docRef) => {
+                alert("Kayıt işlemi başarıyla tamamlandı!");
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              })
+          );
+      }
+    );
+  }
   return (
     <Container style={{ paddingTop: 30, marginBottom: 100, paddingLeft: 100 }}>
       <h4>Kart Bilgileri</h4>
@@ -23,12 +51,11 @@ const Payment = () => {
           width: 1000,
           backgroundColor: "#eee9e9",
           padding: 30,
-          borderRadius: 10
+          borderRadius: 10,
         }}
       >
         <Col xs="5">
           <Form style={{ alignItems: "center", position: "relative" }}>
-            {" "}
             <FormGroup>
               <br />
               <Label>Kart Numarası</Label>
@@ -88,6 +115,7 @@ const Payment = () => {
                 lineHeight: 2,
                 fontWeight: "bold",
               }}
+              onClick={() => payment()}
             >
               Ödeme Yap
             </a>

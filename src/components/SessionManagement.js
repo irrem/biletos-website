@@ -55,9 +55,8 @@ const SessionManagement = () => {
 
   const createEmptyPlan = () => {
     var Plan = [];
-    for (var i = 0; i < 100; i++) {
-      Plan.push({ id: '0' });
-    }
+    for (var i = 0; i < 100; i++)
+      Plan.push({ id: '0' });    
     return Plan;
   };
 
@@ -218,6 +217,7 @@ const SessionManagement = () => {
                     >
                       Seans Saatleri
                     </a>
+                    <div className="butonContainer-small">
                     <br />
                     {item.times.length ? (
                       item.times.map(item2 => (
@@ -235,7 +235,7 @@ const SessionManagement = () => {
                       ))
                     ) : (
                       <a>Seans Bulunmuyor...</a>
-                    )}
+                    )}</div>
                   </Col>
                 </Row>
                 <hr />

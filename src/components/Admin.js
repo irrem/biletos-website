@@ -48,18 +48,7 @@ const Admin = () => {
         }}
       >
         <Row>
-          <Col
-            md="4"
-            style={{ marginLeft: 80, paddingTop: 60, position: "relative" }}
-          ></Col>
-          <Col md="3">
-            <Table>
-              <Row>
-                <Col></Col>
-              </Row>
-            </Table>
-          </Col>
-          <Col md="4">
+          <Col >
             <div className="butonContainer-left">
               <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="/usermanagement">
                 {" "}
@@ -69,25 +58,32 @@ const Admin = () => {
             <div className="butonContainer-left">
               <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatre">
                 {" "}
-                Tiyatroları Düzenle{" "}
+                Tiyatro Yönetimi{" "}
               </a>
             </div>
             <div className="butonContainer-left">
               <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/films">
                 {" "}
-                Sinemaları Düzenle
+                Sinema Yönetimi
               </a>
             </div>
             <div className="butonContainer-left">
               <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/talkshow">
-                {" "}
-                TalkShow Düzenle
+                TalkShow Yönetimi
               </a>
             </div>
-            <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement">
-                {" "}
-                Seans ve Salonları Düzenle
+           
+          </Col><Col> <div className="butonContainer-left">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement/films">
+                Sinema Seans Yönetimi
+              </a>
+            </div><div className="butonContainer-left">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement/theatre">
+                Tiyatro Seans Yönetimi
+              </a>
+            </div><div className="butonContainer-left">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement/talkshow">
+                TalkShow Seans Yönetimi
               </a>
             </div>
           </Col>
