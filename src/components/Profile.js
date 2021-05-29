@@ -23,6 +23,7 @@ const Profil = () => {
       localStorage.getItem("user-session"),
       "biletos-password",
       function (err, token) {
+        if(token)
         db.collection("users")
           .where("email", "==", token[0].email)
           .get()
