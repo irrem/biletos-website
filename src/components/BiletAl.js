@@ -74,34 +74,9 @@ const BiletAl = props => {
   }
 
   function buyTicket(data) {
-    jwt.verify(localStorage.getItem('user-session'), 'biletos-password', function (err, token) {
-      firebase
-        .database()
-        .ref(
-          'showrooms/' +
-            selectedChair.showroomId +
-            '/session/' +
-            selectedChair.sessionId +
-            '/plan/' +
-            selectedChair.chairId
-        )
-        .update({
-          id: token[0].email
-        })
-        .then(() => {
-          db.collection('users')
-            .where('email', '==', token[0].email)
-            .get()
-            .then(querySnapshot =>
-              // bu emaile ait id querySnapshot.docs[0].id
-
-              db
-                .collection('users')
-                .doc(querySnapshot.docs[0].id)
-                .collection('tickets')
-                .add(selectedChair)
-            );
-        });
+    jwt.sign(JSON.stringify(selectedChair), 'biletos-password', function (err, data) {
+      localStorage.setItem('payment-session', data);
+      window.location.href = '/payment';
     });
   }
 
@@ -123,6 +98,16 @@ const BiletAl = props => {
                     }}
                   >
                     {items?.product?.title}
+                  </a>
+                  <hr />
+                  <a
+                    style={{
+                      color: 'black',
+                      lineHeight: 2,
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    Fiyat: {items?.product?.price} TL
                   </a>
                 </center>
                 <hr />
@@ -155,7 +140,9 @@ const BiletAl = props => {
                             : setSelectedChair({
                                 showroomId: selectedSessionPlan?.showroomId,
                                 sessionId: selectedSessionPlan?.sessionId,
-                                chairId: index
+                                chairId: index,
+                                title: items?.product?.title,
+                                price: items?.product?.price
                               })
                         }
                         style={{
@@ -169,10 +156,10 @@ const BiletAl = props => {
                           lineHeight: 3,
                           padding: 5,
                           fontSize: 15,
-                          cursor:'pointer'
+                          cursor: 'pointer'
                         }}
                       >
-                       o
+                        o
                       </a>
                     ))}
                   </div>
@@ -188,6 +175,7 @@ const BiletAl = props => {
                 >
                   {items?.product?.title}
                 </a>
+
                 <br />
                 <p>{items?.product?.description}</p>
                 <br />

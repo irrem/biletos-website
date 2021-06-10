@@ -38,8 +38,7 @@ const UyeOl = () => {
      
   };
 
-  const InsertMethod = () => {
-    console.log("geldi");
+  const InsertMethod = () => { 
     db.collection("users")
       .add({
         name: name,

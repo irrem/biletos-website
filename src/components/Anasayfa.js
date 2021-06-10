@@ -60,7 +60,8 @@ const SessionManagement = () => {
             description: doc.data().description,
             image: doc.data().image,
             category: doc.data().category,
-            time: doc.data().time
+            time: doc.data().time,
+            price: doc.data().price
           });
         });
         getSessions(List);
@@ -193,6 +194,9 @@ const SessionManagement = () => {
                       ) : (
                         <a>Seans Bulunmuyor...</a>
                       )}
+
+                      <hr />
+                      <a>Fiyat: {item.price} TL</a>
                     </Col>
                   </Row>
                   <hr />

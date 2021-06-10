@@ -46,6 +46,7 @@ const ProductManagement = () => {
   const [id, setId] = useState(null);
   const [showrooms, setShowrooms] = useState([]);
   const [selectedShowroom, setSelectedShowroom] = useState(null);
+  const [price, setPrice] = useState(null);
 
   const { productType } = useParams();
   console.log(productType);
@@ -97,7 +98,7 @@ const ProductManagement = () => {
 
   const InsertItemData = () => {
     db.collection(productType)
-      .add({ category, title, image, description })
+      .add({ category, title, image, description, price })
       .then(docRef => {
         setItems([]);
         getShowRooms();
@@ -140,7 +141,8 @@ const ProductManagement = () => {
             description: doc.data().description,
             image: doc.data().image,
             category: doc.data().category,
-            time: doc.data().time
+            time: doc.data().time,
+            price: doc.data().price
           });
         });
         getSessions(List);
@@ -245,6 +247,16 @@ const ProductManagement = () => {
                         >
                           {item.title}
                         </a>
+                        <br />
+                        <a
+                          style={{
+                            color: 'black',
+                            lineHeight: 2,
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          Fiyat: {item.price} TL
+                        </a>
                       </center>
                       <hr />
                       <div className='butonContainer'>
@@ -313,6 +325,13 @@ const ProductManagement = () => {
                     type='text'
                     placeholder='Afiş görsel adresini giriniz'
                     value={image}
+                  />
+                  <Label>Fiyat</Label>
+                  <Input
+                    onChange={text => setPrice(text.target.value)}
+                    type='text'
+                    placeholder='Film fiyatı giriniz'
+                    value={price}
                   />{' '}
                   <br />
                   <div onClick={() => InsertItemData()} className='butonContainer-small'>
