@@ -22,7 +22,7 @@ const Payment = () => {
       err,
       selectedChairdata
     ) {
-      console.log(selectedChairdata)
+      //console.log(selectedChairdata)
       setSelectChair(selectedChairdata);
     });
   }, []);

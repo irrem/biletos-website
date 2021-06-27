@@ -48,7 +48,7 @@ const SessionManagement = () => {
         setSelectedFilm({ id: querySnapshot.id, title: querySnapshot.data().title });
       })
       .catch(error => {
-        console.log('Error getting documents: ', error);
+       // console.log('Error getting documents: ', error);
       });
     setId(id);
   }
@@ -76,7 +76,7 @@ const SessionManagement = () => {
         getShowRooms();
       })
       .catch(error => {
-        console.log(error);
+       // console.log(error);
       });
   }
 
@@ -123,7 +123,6 @@ const SessionManagement = () => {
       newList.push(filmitem[key]);
     }
     setItems(newList.reverse());
-    console.log(newList);
   }
   function getShowRooms() {
     var List = [];
@@ -135,12 +134,10 @@ const SessionManagement = () => {
           List.push({ id: key, name: data.toJSON()[key].showroomName });
         }
         setShowrooms(List);
-        console.log(List);
       });
   }
 
   async function deleteSession(sessionId, session) {
-    console.log('showrooms/' + sessionId + '/session/' + session);
     await firebase
       .database()
       .ref('showrooms/' + sessionId + '/session/' + session)
@@ -217,7 +214,7 @@ const SessionManagement = () => {
                     >
                       Seans Saatleri
                     </a>
-                    <div className="butonContainer-small">
+                    <div className="butonContainer">
                     <br />
                     {item.times.length ? (
                       item.times.map(item2 => (

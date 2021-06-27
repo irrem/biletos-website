@@ -70,7 +70,6 @@ const BiletAl = props => {
     }
     data.plan = planArray;
     setSelectedSessionPlan(data);
-    console.log(data);
   }
 
   function buyTicket(data) {
@@ -86,7 +85,7 @@ const BiletAl = props => {
         <Col>
           <>
             <Row>
-              <Col md='4'>
+              <Col md='3'>
                 <center>
                   <img style={{ width: 200, height: 300 }} src={items?.product?.image} />
                   <br />
@@ -115,23 +114,16 @@ const BiletAl = props => {
                   Bilet Al
                 </a>
               </Col>
-              <Col md='5'>
+              <Col md='6'>
                 <Container>
-                  <a
-                    style={{
-                      color: 'black',
-                      lineHeight: 2,
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    Seans Seçiniz
-                  </a>
-                  <br />
+                
+                <h5> Öncelikle Seans Seçiniz</h5>
+                <br/><br/>
+                <h6> Seans Salonundan Koltuk Seçiniz</h6>
                   <div
                     className='saloon'
                     style={{ width: '100%', height: '100%', wordWrap: 'break-word' }}
                   >
-                    <h4> Koltuk Seçiniz</h4>
                     {selectedSessionPlan?.plan?.map((item, index) => (
                       <a
                         onClick={() =>
@@ -153,9 +145,10 @@ const BiletAl = props => {
                               ? 'lightgreen'
                               : 'lightgray',
                           marginLeft: 5,
+                          
                           lineHeight: 3,
-                          padding: 5,
-                          fontSize: 15,
+                          padding: 9.42,
+                          fontSize: 0,
                           cursor: 'pointer'
                         }}
                       >
