@@ -122,25 +122,6 @@ const ProductManagement = () => {
             description: doc.data().description,
             image: doc.data().image,
             category: doc.data().category,
-            time: doc.data().time
-          });
-        });
-        getSessions(List);
-      });
-  }
-
-  function GetData() {
-    var List = [];
-    db.collection(productType)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          List.push({
-            id: doc.id,
-            title: doc.data().title,
-            description: doc.data().description,
-            image: doc.data().image,
-            category: doc.data().category,
             time: doc.data().time,
             price: doc.data().price
           });
@@ -148,6 +129,7 @@ const ProductManagement = () => {
         getSessions(List);
       });
   }
+
   async function getSessions(filmitem) {
     var newList = [];
     for (const key in filmitem) {
@@ -177,7 +159,7 @@ const ProductManagement = () => {
 
   function UpdateData(id) {
     console.log(id);
-    db.collection(productType).doc(id).update({ category, title, image, description });
+    db.collection(productType).doc(id).update({ category, title, image, description,price });
     setItems([]);
     getShowRooms();
     GetData();

@@ -78,7 +78,7 @@ const Admin = () => {
                 Sinema Seans Yönetimi
               </a>
             </div><div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement/theatre">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="sessionmanagement/theatres">
                 Tiyatro Seans Yönetimi
               </a>
             </div><div className="butonContainer-left">

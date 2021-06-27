@@ -15,14 +15,12 @@ import firebaseConfig from "../constants/firebase";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
 const links = [
   { href: "../anasayfa", text: "", type: "icon", className: "menuItem" },
   { href: "../anasayfa", text: "Anasayfa", type: "text", className: "menuItem" },
   { href: "../uyeol", text: "Kayıt Ol", type: "text", className: "menuItem" },
   { href: "../girisyap", text: "Giriş Yap", type: "text", className: "menuItem" },
   { href: "../profile", text: "Profil", type: "text", className: "menuItem" },
-  { href: "../payment", text: "Payment", type: "text", className: "menuItem" },
   { href: "admin", text: "Admin", type: "text", className: "menuItem" }
 ];
 
@@ -48,7 +46,13 @@ const createNavItem = ({ href, text, className, type }) => {
     localStorage.getItem("user-session") &&
     (text == "Kayıt Ol" || text == "Giriş Yap")
   )
-    return null;
+      return null;
+  else if(
+    !localStorage.getItem("user-session") &&
+    (text == "Anasayfa" || text == "Admin"|| text == "Profil")
+  )
+  return null;
+ 
   else 
     return (
       <NavItem>
@@ -67,6 +71,7 @@ const createNavItem = ({ href, text, className, type }) => {
       </NavItem>
     );
 };
+  
 
 export default class Header extends Component {
   constructor(props) {
