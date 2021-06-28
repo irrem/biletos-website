@@ -12,7 +12,7 @@ var db = firebase.firestore();
 const Payment = () => {
   const [cvc, setCvc] = useState(null);
   const [totalMoney, setTotalMoney] = useState(null);
-  const [cardNumber, setCardNumber] = useState(null);
+  const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState(null);
   const [cardDeadline, setCardDeadline] = useState(null);
   const [selectedChair, setSelectChair] = useState([]);
@@ -28,6 +28,8 @@ const Payment = () => {
   }, []);
 
   function buyTicket(data) {
+    alert(typeof cardNumber);
+    if (typeof cardNumber != 'number') return alert('Lütfen kart numaranızı düzgün giriniz');
     jwt.verify(localStorage.getItem('user-session'), 'biletos-password', function (err, token) {
       firebase
         .database()
@@ -77,10 +79,14 @@ const Payment = () => {
               <br />
               <Label>Kart Numarası</Label>
               <Input
-                onChange={text => setCardNumber(text.target.value)}
-                type='text'
+                onChange={text => {
+                  setCardNumber(text.target.value);
+                  if (cardNumber.length > 15) setCardNumber(cardNumber.substring(0, 15));
+                }}
+                type='number'
                 placeholder='____-____-____-____'
                 value={cardNumber}
+                maxLength={16}
               />
               <br />
               <Label>Kart Üzerindeki İsim Soyisim</Label>

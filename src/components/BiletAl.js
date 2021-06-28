@@ -73,6 +73,8 @@ const BiletAl = props => {
   }
 
   function buyTicket(data) {
+    if (selectedChair.length < 1) return alert('Önce seans seçiniz');
+    if (!localStorage.getItem('user-session')) return alert('Önce giriş yapmalısınız');
     jwt.sign(JSON.stringify(selectedChair), 'biletos-password', function (err, data) {
       localStorage.setItem('payment-session', data);
       window.location.href = '/payment';
@@ -116,10 +118,10 @@ const BiletAl = props => {
               </Col>
               <Col md='6'>
                 <Container>
-                
-                <h5> Öncelikle Seans Seçiniz</h5>
-                <br/><br/>
-                <h6> Seans Salonundan Koltuk Seçiniz</h6>
+                  <h5> Öncelikle Seans Seçiniz</h5>
+                  <br />
+                  <br />
+                  <h6> Seans Salonundan Koltuk Seçiniz</h6>
                   <div
                     className='saloon'
                     style={{ width: '100%', height: '100%', wordWrap: 'break-word' }}
@@ -145,7 +147,7 @@ const BiletAl = props => {
                               ? 'lightgreen'
                               : 'lightgray',
                           marginLeft: 5,
-                          
+
                           lineHeight: 3,
                           padding: 9.42,
                           fontSize: 0,
