@@ -190,6 +190,35 @@ const UserManagement = () => {
                     />
                   </FormGroup>
                 </Form>
+                <Row>
+            <div className="butonContainer-small">
+              <a
+                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
+                onClick={() => InsertUserData()}
+              >
+                {" "}
+                Kaydet{" "}
+              </a>
+            </div>
+            <div className="butonContainer-small">
+              <a
+                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
+                onClick={() => UpdateData(id)}
+              >
+                {" "}
+                Güncelle{" "}
+              </a>
+            </div>
+
+            <div className="butonContainer-small">
+              <a
+                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
+                onClick={() => DeleteData(id)}
+              >
+                Sil
+              </a>
+            </div>
+        </Row>
               </Row>
             </Table>
           </Col>
@@ -221,37 +250,7 @@ const UserManagement = () => {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col md="8" style={{ marginLeft: 300, alignContent: "center" }}>
-            <div className="butonContainer-small">
-              <a
-                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
-                onClick={() => InsertUserData()}
-              >
-                {" "}
-                Kaydet{" "}
-              </a>
-            </div>
-            <div className="butonContainer-small">
-              <a
-                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
-                onClick={() => UpdateData(id)}
-              >
-                {" "}
-                Güncelle{" "}
-              </a>
-            </div>
-
-            <div className="butonContainer-small">
-              <a
-                style={{ color: "white", lineHeight: 2, fontWeight: "bold" }}
-                onClick={() => DeleteData(id)}
-              >
-                Sil
-              </a>
-            </div>
-          </Col>
-        </Row>
+       
       </Container>
     </Container>
   );

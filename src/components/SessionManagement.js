@@ -175,7 +175,7 @@ const SessionManagement = () => {
                       </a>
                     </center>
                     <hr />
-                    <div className='butonContainer'>
+                    <div className='butonContainer-small' style={{marginLeft:30}}>
                       <a
                         onClick={() => GetDataWithId(item.id)}
                         style={{
@@ -197,7 +197,7 @@ const SessionManagement = () => {
                     >
                       <b style={{ color: 'black' }}>{item.title}</b>
                       <br />
-                      Salon:<b> {item.showroom}</b>
+                    
                     </a>
                     <br />
                     <br />
@@ -214,11 +214,11 @@ const SessionManagement = () => {
                     >
                       Seans Saatleri
                     </a>
-                    <div className="butonContainer" style={{marginBottom:5, borderRadius:3}}>
+                    <div>
                     <br />
                     {item.times.length ? (
                       item.times.map(item2 => (
-                        <div>
+                        <div  className="data-cell">
                           Salon Adı: <b>{item2.session}</b>
                           <br />
                           Saati: <b>{TimeFormatter(item2.hour)}</b>

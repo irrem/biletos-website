@@ -215,7 +215,6 @@ const ProductManagement = () => {
               items.map((item, index) => (
                 <div key={index}>
                   <Row>
-                    {index}
                     <Col md='4'>
                       <center>
                         <img style={{ width: 150, height: 250 }} src={item.image} />
@@ -241,13 +240,14 @@ const ProductManagement = () => {
                         </a>
                       </center>
                       <hr />
-                      <div className='butonContainer'>
+                      <div className='butonContainer-small' style={{marginLeft:30}}>
                         <a
                           onClick={() => GetDataWithId(item.id)}
                           style={{
                             color: 'white',
                             lineHeight: 2,
                             fontWeight: 'bold'
+                            
                           }}
                         >
                           Seç
