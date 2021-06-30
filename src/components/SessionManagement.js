@@ -195,7 +195,7 @@ const SessionManagement = () => {
                         lineHeight: 2
                       }}
                     >
-                      <b style={{ color: 'red' }}>{item.title}</b>
+                      <b style={{ color: 'black' }}>{item.title}</b>
                       <br />
                       Salon:<b> {item.showroom}</b>
                     </a>
@@ -214,7 +214,7 @@ const SessionManagement = () => {
                     >
                       Seans Saatleri
                     </a>
-                    <div className="butonContainer">
+                    <div className="butonContainer" style={{marginBottom:5, borderRadius:3}}>
                     <br />
                     {item.times.length ? (
                       item.times.map(item2 => (
@@ -224,9 +224,9 @@ const SessionManagement = () => {
                           Saati: <b>{TimeFormatter(item2.hour)}</b>
                           <a
                             onClick={() => deleteSession(item2.sessionId, item2.id)}
-                            style={{ marginLeft: 10, textDecoration: 'underline', color: 'red' }}
-                          >
-                            SİL
+                            style={{ marginLeft: 10, textDecoration: 'underline', color: 'black' }}
+                          ><b>SİL</b>
+                            
                           </a>
                         </div>
                       ))
