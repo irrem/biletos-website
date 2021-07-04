@@ -30,7 +30,7 @@ const Admin = () => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
+        //  console.log(`${doc.id} => ${doc.data()}`);
         });
       });
   };
@@ -56,7 +56,7 @@ const Admin = () => {
               </a>
             </div>
             <div className="butonContainer-left">
-              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatre">
+              <a style={{ color: "white", lineHeight: 2, fontWeight: "bold" }} href="productmanagement/theatres">
                 {" "}
                 Tiyatro Yönetimi{" "}
               </a>
